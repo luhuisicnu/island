@@ -2,7 +2,7 @@ from django.db import models
 
 
 class BaseModel(models.Model):
-    name = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, unique=True, default='')
     description = models.TextField(blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
@@ -13,15 +13,32 @@ class BaseModel(models.Model):
 
 class User(BaseModel):
     email = models.CharField(max_length=255, default='@example.com')
-    password = models.CharField(max_length=255, default='123456')
+    password_hash = models.CharField(max_length=255, default='123456')
     birthday = models.DateTimeField(null=True, blank=True)
     sex = models.IntegerField(default=0)  # male 1 unknown 0 female -1
     avatar_path = models.CharField(max_length=255, null=True, blank=True)
     phone_number = models.CharField(max_length=11, null=True, blank=True)
+    disabled = models.BooleanField(default=False)
+    last_login = models.DateTimeField(auto_now_add=True)
     fans = models.ManyToManyField("self", related_name='star', symmetrical=False)  # 粉丝关注关系
     apprentice = models.ManyToManyField("self", related_name='master', symmetrical=False)  # 师徒关系
     blacklist = models.ManyToManyField('self', related_name='+', symmetrical=False)  # 单向黑名单
     groups = models.ManyToManyField('UserGroup', related_name='users')
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def password(self):
+        return self.password_hash
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = password
+
+    def verify_password(self, passowrd):
+        return passowrd == self.password_hash
 
 
 class UserGroup(BaseModel):
@@ -30,7 +47,7 @@ class UserGroup(BaseModel):
 
 
 class Level(BaseModel):
-    """用户等级，需要一份积分换算成等级的算法，以及等级名称"""
+    """用户等级"""
     integral = models.IntegerField(default=0)
     user = models.OneToOneField('User', related_name='level', on_delete=models.CASCADE)
 
@@ -61,4 +78,6 @@ class AuthLog(BaseModel):
     """Auth模块的日志"""
     user_name = models.CharField(max_length=255, default='')
     target = models.CharField(max_length=255, default='')
+    model = models.CharField(max_length=255, default='')
+    index = models.IntegerField(default=1)
     operate_content = models.TextField(default='')
