@@ -1,35 +1,53 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.views import View
+from django.contrib.auth.models import User as auth_user
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import login, logout
 from .models import User
-# from .login_management import login_required
+from .forms import LoginForm, RegisterForm
+from .login_management import login_required, login, logout, UID_KEY
+
+
+class Register(View):
+    def get(self, request):
+        context = {"form": RegisterForm()}
+        return render(request, 'customize_auth/register.html', context=context)
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            User.objects.create(name=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            return redirect('login')
+
+        context = {"form": form}
+        return render(request, 'customize_auth/register.html', context=context)
 
 
 class Login(View):
     def get(self, request):
-        user = User.objects.filter(name='u1').first()
-        login(request, user)
-        return HttpResponse('login get')
+        context = {"form": LoginForm()}
+        return render(request, 'customize_auth/login.html', context=context)
 
     def post(self, request):
-        user = User.objects.filter(name=request.POST.get('username')).first()
-        if not user:
-            return HttpResponseNotFound('No such user')
-        if not user.verify_password(request.POST.get('password')):
-            return redirect('login')
-        login(request, user)
-        return HttpResponse('login post')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = User.objects.filter(name=form.cleaned_data['username']).first()
+            login(request, user)
+            return redirect(request.GET.get('next') or 'test')
+
+        context = {"form": form}
+        return render(request, 'customize_auth/login.html', context=context)
 
 
 class Logout(View):
     def get(self, request):
         logout(request)
-        return HttpResponse('logout')
+        return redirect(request.GET.get('next') or 'test')
 
 
-# @login_required
+@login_required
 def test(request):
+    print(request.customize_user)
     return render(request, 'base.html')

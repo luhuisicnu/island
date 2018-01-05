@@ -1,4 +1,9 @@
 from django.db import models
+from django.contrib.auth.hashers import (
+    check_password, make_password,
+)
+
+SEX = ((1, '男'), (-1, '女'), (0, '隐藏'))
 
 
 class BaseModel(models.Model):
@@ -12,12 +17,12 @@ class BaseModel(models.Model):
 
 
 class User(BaseModel):
-    email = models.CharField(max_length=255, default='@example.com')
+    email = models.CharField(max_length=255, default='@example.com', verbose_name='邮箱')
     password_hash = models.CharField(max_length=255, default='123456')
-    birthday = models.DateTimeField(null=True, blank=True)
-    sex = models.IntegerField(default=0)  # male 1 unknown 0 female -1
-    avatar_path = models.CharField(max_length=255, null=True, blank=True)
-    phone_number = models.CharField(max_length=11, null=True, blank=True)
+    birthday = models.DateTimeField(null=True, blank=True, verbose_name='生日')
+    sex = models.IntegerField(default=0, choices=SEX, verbose_name='性别')
+    avatar_path = models.CharField(max_length=255, null=True, blank=True, verbose_name='头像')
+    phone_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='手机号')
     disabled = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now_add=True)
     fans = models.ManyToManyField("self", related_name='star', symmetrical=False)  # 粉丝关注关系
@@ -35,10 +40,13 @@ class User(BaseModel):
 
     @password.setter
     def password(self, password):
-        self.password_hash = password
+        self.password_hash = make_password(password)
 
     def verify_password(self, passowrd):
-        return passowrd == self.password_hash
+        def setter(raw_password):
+            self.password = raw_password
+            self.save(update_fields=["password_hash"])
+        return check_password(passowrd, self.password, setter)
 
 
 class UserGroup(BaseModel):

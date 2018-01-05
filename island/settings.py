@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'customize_auth.login_management.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'island.urls'
@@ -128,9 +129,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-APPEND_SLASH = False
+# APPEND_SLASH = False
 
-LOGIN_URL = '/auth/login'
+LOGIN_URL = '/auth/login/'
 # 会话有效期为1天 (以秒计算)
 SESSION_COOKIE_AGE = 86400
 
