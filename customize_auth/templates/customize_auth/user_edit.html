@@ -16,13 +16,13 @@
           <div class="card-content">
             <h2 class="card-title center blue-text text-darken-2">资料修改</h2>
             <div class="card-image"></div>
-            <form action="{{ request.get_full_path }}" method="post">
+            <form action="{{ request.get_full_path }}" method="post" enctype="multipart/form-data">
               {% csrf_token %}
 
               {% for field in form %}
                 {% if field.name == 'avatar' %}
                   <div class="card-image">
-                    <img src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/2.jpg {% endif %}">
+                    <img src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
                   </div>
                   {{ field }} {{ field.label_tag }}
                 {% else %}
