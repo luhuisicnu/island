@@ -19,9 +19,9 @@ class BaseModel(models.Model):
 class User(BaseModel):
     email = models.CharField(max_length=255, default='@example.com', verbose_name='邮箱')
     password_hash = models.CharField(max_length=255, default='123456')
-    birthday = models.DateTimeField(null=True, blank=True, verbose_name='生日')
+    birthday = models.DateField(null=True, blank=True, verbose_name='生日')
     sex = models.IntegerField(default=0, choices=SEX, verbose_name='性别')
-    avatar_path = models.CharField(max_length=255, null=True, blank=True, verbose_name='头像')
+    avatar = models.ImageField(upload_to='avatar', null=True, blank=True, verbose_name='头像')
     phone_number = models.CharField(max_length=11, null=True, blank=True, verbose_name='手机号')
     disabled = models.BooleanField(default=False)
     last_login = models.DateTimeField(auto_now_add=True)

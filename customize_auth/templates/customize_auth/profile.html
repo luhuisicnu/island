@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block container %}
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+          <img src="{% static 'avatar/1.jpg' %}">
+          <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'user_edit' %}"><i class="material-icons">mode_edit</i></a>
+        </div>
+        <div class="card-content">
+          <div class="card-title">{{ request.customize_user.name }}</div>
+          <p>{{ request.customize_user.description }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-title">等级：１</div>
+        <div class="card-title">成就</div>
+        <div class="card-content">
+          <div class="card-title">成就１</div>
+          <div class="card-title">成就１</div>
+          <div class="card-title">成就１</div>
+          <div class="card-title">成就１</div>
+        </div>
+
+        <div class="card-title">上次登录：{{ request.customize_user.last_login |date:'Y-m-d H:i:s' }}</div>
+        <div class="card-title">粉丝：１</div>
+        <div class="card-title">关注：１</div>
+        <div class="card-title">师傅：１</div>
+        <div class="card-title">徒弟：１</div>
+        <div class="card-title">黑名单：１</div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

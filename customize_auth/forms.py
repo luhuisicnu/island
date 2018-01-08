@@ -43,3 +43,15 @@ class LoginForm(forms.Form):
         if not user.verify_password(password):
             raise forms.ValidationError('用户名或密码错误')
         return dict(username=username, password=password)
+
+
+class UserForm(forms.ModelForm):
+    name = forms.CharField(label='昵称', max_length=255, help_text='请输入正确的昵称')
+
+    class Meta:
+        model = User
+        fields = ['avatar', 'name', 'sex', 'description', 'email', 'phone_number', 'birthday']
+        widgets = {
+            'description': forms.TextInput(),
+            'email': forms.EmailInput(),
+        }
