@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
-from .views import Login, Logout, test, Register, Profile, UserEdit
+from .views import Login, Logout, test, Register, Profile, UserEdit, UploadAvatar
 
 urlpatterns = [
     path('register/', Register.as_view(), name='register'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', Logout.as_view(), name='logout'),
     path('profile/', Profile.as_view(), name='profile'),
     path('user-edit/', UserEdit.as_view(), name='user_edit'),
+    path('upload-avatar/', UploadAvatar.as_view(), name='upload_avatar'),
     path('', test, name='test'),
 ]
 

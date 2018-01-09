@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from .models import User
-from .forms import LoginForm, RegisterForm, UserForm
+from .forms import LoginForm, RegisterForm, UserForm, AvatarForm
 from .login_management import login_required, login, logout, UID_KEY
 
 
@@ -75,9 +75,11 @@ class UserEdit(View):
 @method_decorator(login_required, name='dispatch')
 class UploadAvatar(View):
     def post(self, request):
-        file = request.FILES.get('avatar')
-        if not file:
-            return HttpResponseBadRequest('No file named avatar upload!')
+        form = AvatarForm(request.POST, request.FILES, instance=request.customize_user)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success'})
+        return HttpResponseBadRequest(str(form.errors))
 
 
 @login_required

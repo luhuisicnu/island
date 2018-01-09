@@ -50,8 +50,15 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['avatar', 'name', 'sex', 'description', 'email', 'phone_number', 'birthday']
+        fields = ['name', 'sex', 'description', 'email', 'phone_number', 'birthday']
         widgets = {
             'description': forms.TextInput(),
             'email': forms.EmailInput(),
         }
+
+
+class AvatarForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['avatar']
+
