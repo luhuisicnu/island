@@ -22,9 +22,10 @@
               {% for field in form %}
                 {% if field.name == 'avatar' %}
                   <div class="card-image">
-                    <img src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
+                    <img id="avatar-img" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
                   </div>
-                  {{ field }} {{ field.label_tag }}
+                  <input type="file" name="avatar" id="id_avatar" class="away">
+                  <div class="center" id="upload_avatar"><button class="btn" type="button">更新头像</button></div>
                 {% else %}
                   <div class="input-field">
                     {{ field }} {{ field.label_tag }}
@@ -60,13 +61,24 @@
         $('select').material_select();
         $('#id_birthday').pickadate({
           selectMonths: true, // Creates a dropdown to control month
-          selectYears: 300, // Creates a dropdown of 15 years to control year,
+          selectYears: 300, // Creates a dropdown of 300 years to control year,
           today: 'Today',
           clear: 'Clear',
           close: 'Ok',
           closeOnSelect: false, // Close upon selecting a date,
           format: 'yyyy-mm-dd'
         });
+        init_avatar();
     });
+
+    function init_avatar() {
+        $('#upload_avatar').click(function () {
+            $('#id_avatar').click();
+        });
+        $('#id_avatar').change(function () {
+            var avatar = this.files[0];
+            $('#avatar-img').attr('src', window.URL.createObjectURL(avatar))
+        });
+    }
   </script>
 {% endblock %}
