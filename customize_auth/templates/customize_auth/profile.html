@@ -2,37 +2,49 @@
 
 {% load static %}
 {% block container %}
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card">
+  <div class="card">
+    <div class="card-content">
+      <div class="card horizontal z-depth-0">
         <div class="card-image">
-          <img src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
-          <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'user_edit' %}"><i class="material-icons">mode_edit</i></a>
+          <img width="300px" height="300px" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
         </div>
-        <div class="card-content">
-          <div class="card-title">{{ request.customize_user.name }} <small>{{ request.customize_user.level.description }}</small></div>
-          <p>{{ request.customize_user.description }}</p>
+        <div class="card-stacked">
+          <div class="card-content">
+            <div class="card-title">{{ request.customize_user.name }}</div>
+            <p><small>等级：{{ request.customize_user.level.description }}</small></p>
+            <p>{{ request.customize_user.description }}</p>
+          </div>
+          <div class="card-content">
+            <table>
+              <tbody>
+                <tr>
+                  <td>关注：0</td>
+                  <td>粉丝：0</td>
+                  <td>师傅：0</td>
+                  <td>徒弟：0</td>
+                  <td>黑名单：0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'user_edit' %}"><i class="material-icons">mode_edit</i></a>
         </div>
       </div>
     </div>
-    <div class="col s12 m6">
-      <div class="card">
-        <div class="card-title">等级：１</div>
-        <div class="card-title">成就</div>
-        <div class="card-content">
-          <div class="card-title">成就１</div>
-          <div class="card-title">成就１</div>
-          <div class="card-title">成就１</div>
-          <div class="card-title">成就１</div>
-        </div>
 
-        <div class="card-title">上次登录：{{ request.customize_user.last_login |date:'Y-m-d H:i:s' }}</div>
-        <div class="card-title">粉丝：１</div>
-        <div class="card-title">关注：１</div>
-        <div class="card-title">师傅：１</div>
-        <div class="card-title">徒弟：１</div>
-        <div class="card-title">黑名单：１</div>
-      </div>
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab"><a class="active" href="#">动态</a></li>
+        <li class="tab"><a href="#">提问</a></li>
+        <li class="tab"><a href="#">回答</a></li>
+        <li class="tab"><a href="#">文章</a></li>
+        <li class="tab"><a href="#">师傅</a></li>
+        <li class="tab"><a href="#">徒弟</a></li>
+      </ul>
+    </div>
+
+    <div class="card-content">
+      <p>tab内容</p>
     </div>
   </div>
 {% endblock %}
