@@ -9,8 +9,8 @@ def refresh_level_name():
     """刷新用户等级"""
     def do_refresh(query_set, level_name):
         for level in query_set.all():
-            if level.name != level_name:
-                level.name = level_name
+            if level.description != level_name:
+                level.description = level_name
                 level.save()
 
     all_levels = Level.objects.order_by('-integral')

@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadReque
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from .models import User
+from .models import User, Level
 from .forms import LoginForm, RegisterForm, UserForm, AvatarForm
 from .login_management import login_required, login, logout, UID_KEY
 
@@ -18,7 +18,8 @@ class Register(View):
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            User.objects.create(name=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            new_user = User.objects.create(name=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            Level.objects.create(user=new_user, name=new_user.name)
             return redirect('login')
 
         context = {"form": form}

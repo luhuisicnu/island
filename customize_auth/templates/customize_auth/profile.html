@@ -10,7 +10,7 @@
           <a class="btn-floating halfway-fab waves-effect waves-light red" href="{% url 'user_edit' %}"><i class="material-icons">mode_edit</i></a>
         </div>
         <div class="card-content">
-          <div class="card-title">{{ request.customize_user.name }}</div>
+          <div class="card-title">{{ request.customize_user.name }} <small>{{ request.customize_user.level.description }}</small></div>
           <p>{{ request.customize_user.description }}</p>
         </div>
       </div>
