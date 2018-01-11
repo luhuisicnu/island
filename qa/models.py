@@ -32,3 +32,13 @@ class Answer(models.Model):
         if hasattr(self, 'acception_as_first') or hasattr(self, 'acception_as_best'):
             return True
         return False
+
+
+class QuestionImage(models.Model):
+    image = models.ImageField(upload_to='question')
+    question = models.ForeignKey('Question', related_name='images', on_delete=models.CASCADE)
+
+
+class AnswerImage(models.Model):
+    image = models.ImageField(upload_to='answer')
+    answer = models.ForeignKey('Answer', related_name='images', on_delete=models.CASCADE)
