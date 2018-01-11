@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery',
     'customize_auth',
+    'qa',
 ]
 
 MIDDLEWARE = [
