@@ -6,13 +6,13 @@
     <div class="card-content">
       <div class="card horizontal z-depth-0">
         <div class="card-image">
-          <img width="300px" height="300px" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/1.jpg {% endif %}">
+          <img width="100%" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/default.png {% endif %}">
         </div>
         <div class="card-stacked">
           <div class="card-content">
             <div class="card-title">{{ request.customize_user.name }}</div>
             <p><small>等级：{{ request.customize_user.level.description }}</small></p>
-            <p>{{ request.customize_user.description }}</p>
+            <p>{% if request.customize_user.description %}{{ request.customize_user.description }}{% endif %}</p>
           </div>
           <div class="card-content">
             <table>

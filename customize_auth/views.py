@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from .models import User, Level
 from .forms import LoginForm, RegisterForm, UserForm, AvatarForm
@@ -19,7 +20,7 @@ class Register(View):
         form = RegisterForm(request.POST)
         if form.is_valid():
             new_user = User.objects.create(name=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            Level.objects.create(user=new_user, name=new_user.name)
+            Level.objects.create(user=new_user, name=new_user.name, description=settings.LEVEL_NAME[0])
             return redirect('login')
 
         context = {"form": form}
@@ -38,7 +39,7 @@ class Login(View):
             login(request, user)
             user.last_login = datetime.now()
             user.save()
-            return redirect(request.GET.get('next') or 'test')
+            return redirect(request.GET.get('next') or 'index')
 
         context = {"form": form}
         return render(request, 'customize_auth/login.html', context=context)
@@ -48,7 +49,7 @@ class Login(View):
 class Logout(View):
     def get(self, request):
         logout(request)
-        return redirect(request.GET.get('next') or 'test')
+        return redirect(request.GET.get('next') or 'index')
 
 
 @method_decorator(login_required, name='dispatch')
@@ -81,9 +82,3 @@ class UploadAvatar(View):
             form.save()
             return JsonResponse({'status': 'success'})
         return HttpResponseBadRequest(str(form.errors))
-
-
-@login_required
-def test(request):
-    print(request.customize_user)
-    return render(request, 'base.html')
