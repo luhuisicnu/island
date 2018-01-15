@@ -52,7 +52,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['name', 'sex', 'description', 'email', 'phone_number', 'birthday']
         widgets = {
-            'description': forms.TextInput(),
+            'description': forms.Textarea(attrs={'class': 'materialize-textarea'}),
             'email': forms.EmailInput(),
         }
 

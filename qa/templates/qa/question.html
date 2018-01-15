@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <div class="card">
+    <div class="card-content">
+      <div class="card-title">{{ question.subject }}</div>
+      <p>{{ question.description }}</p>
+    </div>
+    <div class="card-action">
+      <a href="#">举报</a>
+      <a href="#">写回答</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s10">
+      {% for answer in answers %}
+      <div class="card">
+        <div class="card-content">
+          <p>{{ answer.content }}</p>
+        </div>
+        <div class="card-action">
+          <a href="#">赞同</a>
+          <a href="#">否定</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

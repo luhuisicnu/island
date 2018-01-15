@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <div class="card">
+    <div class="card-action">
+      <a href="{% url 'new_question' %}">提问</a>
+    </div>
+  </div>
+
+  {% for question in questions %}
+    <div class="card">
+      <div class="card-content">
+        <a target="_blank" href="{% url 'question' question_id=question.id %}">
+          <div class="card-title">{{ question.subject }}</div>
+          <p>{{ question.description }}</p>
+        </a>
+      </div>
+      <div class="card-action">
+        <a href="#">回答</a>
+        <a href="#">收藏</a>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

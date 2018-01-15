@@ -16,43 +16,53 @@
 
 <body class="blue-grey lighten-5">
   {% block nav %}
-  <ul id="user-dropdown" class="dropdown-content" style="min-width: 150px">
-    <li><a href="{% url 'profile' %}"><i class="material-icons">person</i>我的主页</a></li>
-    <li><a href="{% url 'user_edit' %}"><i class="material-icons">settings</i>设置</a></li>
-    <li class="divider"></li>
-    <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i>退出</a></li>
-  </ul>
-  <nav class="{% if request.customize_user.is_authenticated %}red darken-3{% else %}blue{% endif %}" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Logo</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#"><i class="material-icons">search</i></a></li>
-        <li><a href="#"><i class="material-icons">notifications</i></a></li>
-        <li><a href="#"><i class="material-icons">chat</i></a></li>
-        {% if request.customize_user.is_authenticated %}
-          <li><a class="dropdown-button" href="#" data-activates="user-dropdown"><img height="30px" width="30px" style="margin-top: 15px" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/default.png {% endif %}"> </a></li>
-        {% else %}
-          <li><a href="{% url 'login' %}">登录</a></li>
-          <li><a href="#">注册</a></li>
-        {% endif %}
-      </ul>
+  <div class="navbar-fixed">
+    <ul id="user-dropdown" class="dropdown-content" style="min-width: 150px">
+      <li><a href="{% url 'profile' %}"><i class="material-icons">person</i>我的主页</a></li>
+      <li><a href="{% url 'user_edit' %}"><i class="material-icons">settings</i>设置</a></li>
+      <li class="divider"></li>
+      <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i>退出</a></li>
+    </ul>
+    <nav class="{% if request.customize_user.is_authenticated %}red darken-3{% else %}blue{% endif %}" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="/" class="brand-logo">Logo</a>
+        <ul class="hide-on-med-and-down" style="margin-left: 100px">
+          <li><a href="{% url 'question_list' %}">问答</a></li>
+          <li><a href="#">文章</a></li>
+          <li><a href="#">Demo</a></li>
+          <li><a href="#">教程</a></li>
+          <li><a href="#">师徒</a></li>
+        </ul>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#"><i class="material-icons">search</i></a></li>
+          <li><a href="#"><i class="material-icons">notifications</i></a></li>
+          <li><a href="#"><i class="material-icons">chat</i></a></li>
+          {% if request.customize_user.is_authenticated %}
+            <li><a class="dropdown-button" href="#" data-activates="user-dropdown"><img height="30px" width="30px" style="margin-top: 15px" src="{% if request.customize_user.avatar %} {{ request.customize_user.avatar.url }} {% else %} /media/avatar/default.png {% endif %}"> </a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">登录</a></li>
+            <li><a href="{% url 'register' %}">注册</a></li>
+          {% endif %}
+        </ul>
 
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="/"><i class="material-icons">home</i></a></li>
-        <li><a href="#"><i class="material-icons">notifications</i></a></li>
-        <li><a href="#"><i class="material-icons">chat</i></a></li>
-        {% if request.customize_user.is_authenticated %}
-          <li><a href="{% url 'profile' %}"><i class="material-icons">person</i></a></li>
-          <li><a href="{% url 'user_edit' %}"><i class="material-icons">settings</i></a></li>
-          <li class="divider"></li>
-          <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i></a></li>
-        {% else %}
-          <li><a href="{% url 'login' %}">登录</a></li>
-          <li><a href="#">注册</a></li>
-        {% endif %}
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    </div>
-  </nav>
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="/"><i class="material-icons">home</i></a></li>
+          <li><a href="#"><i class="material-icons">notifications</i></a></li>
+          <li><a href="#"><i class="material-icons">chat</i></a></li>
+          {% if request.customize_user.is_authenticated %}
+            <li><a href="{% url 'profile' %}"><i class="material-icons">person</i></a></li>
+            <li><a href="{% url 'user_edit' %}"><i class="material-icons">settings</i></a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i></a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">登录</a></li>
+            <li><a href="{% url 'register' %}">注册</a></li>
+          {% endif %}
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
   {% endblock %}
 
   <div class="container">

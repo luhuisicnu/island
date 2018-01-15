@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
@@ -21,12 +21,28 @@ class QuestionList(View):
 class Question(View):
     def get(self, request, **kwargs):
         question = get_object_or_404(QuestionModel, pk=kwargs.get('question_id'))
-        context = {'question': question}
+        answers = AnswerModel.objects.filter(question=question).order_by('-created_time').all()
+        context = {'question': question, 'answers': answers}
         return render(request, 'qa/question.html', context=context)
+
+
+class NewQuestion(View):
+    def get(self, request):
+        form = QuestionForm()
+        context = {'form': form}
+        return render(request, 'qa/new_question.html', context=context)
 
     @method_decorator(login_required)
     def post(self, request):
-        pass
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.user = request.customize_user
+            question.save()
+            return redirect('question', question_id=question.id)
+
+        context = {"form": form}
+        return render(request, 'customize_auth/register.html', context=context)
 
 
 class AnswerList(View):
