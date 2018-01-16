@@ -22,8 +22,20 @@ class Question(View):
     def get(self, request, **kwargs):
         question = get_object_or_404(QuestionModel, pk=kwargs.get('question_id'))
         answers = AnswerModel.objects.filter(question=question).order_by('-created_time').all()
-        context = {'question': question, 'answers': answers}
+        form = AnswerForm()
+        context = {'question': question, 'answers': answers, 'form': form}
         return render(request, 'qa/question.html', context=context)
+
+    @method_decorator(login_required)
+    def post(self, request, **kwargs):
+        question = get_object_or_404(QuestionModel, pk=kwargs.get('question_id'))
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.user = request.customize_user
+            answer.save()
+        return redirect('question', question_id=question.id)
 
 
 class NewQuestion(View):
@@ -51,17 +63,6 @@ class AnswerList(View):
         answers = AnswerModel.objects.filter(question=question).order_by('-created_time').all()
         answer_list = json.loads(serializers.serialize('json', answers))
         return JsonResponse({'count': len(answer_list), 'results': answer_list})
-
-
-class Answer(View):
-    def get(self, request, **kwargs):
-        question = get_object_or_404(QuestionModel, pk=kwargs.get('answer_id'))
-        question = json.loads(serializers.serialize('json', [question, ]))[0]
-        return JsonResponse(question)
-
-    @method_decorator(login_required)
-    def post(self, request):
-        pass
 
 
 @method_decorator(login_required, name='dispatch')

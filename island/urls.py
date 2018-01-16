@@ -18,10 +18,13 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.shortcuts import render
+from qa.models import Question
 
 
 def index(request):
-    return render(request, 'index.html')
+    questions = Question.objects.order_by('-id').all()
+    context = {'questions': questions}
+    return render(request, 'qa/question_list.html', context=context)
 
 
 urlpatterns = [

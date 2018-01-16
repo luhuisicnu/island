@@ -21,7 +21,7 @@ class QuestionImageForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ['question', 'content', 'user']
+        fields = ['content']
         widgets = {
             'content': forms.Textarea(attrs={'class': 'materialize-textarea'})
         }
